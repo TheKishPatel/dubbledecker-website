@@ -1,0 +1,408 @@
+/* Global */
+
+body {
+	font-family: Avenir, 'Open Sans', sans-serif;
+	font-weight: 400;
+	font-size: 1em;
+	color: #fff;
+	background-color:#989491;
+}
+img {
+	max-width: 100%;
+}
+a:link {
+	color: #cc1b24;
+	text-decoration: none;
+}
+a:hover {
+	color: #bde2df;
+	text-decoration: none;
+}
+a:visited {
+	color: #cc1b24;
+	text-decoration: none;
+}
+
+p {
+	font-size: 1.4em;
+	line-height: 1.2em;
+}
+
+
+
+
+/* Navigation */
+
+.menu {
+	position:fixed;
+	top:0px;
+	width:100%; 
+	height:auto; 
+	background-color: rgba(255, 255, 255, 0.8);
+	border-bottom: 1px solid rgba(102, 102, 102, 0.3);
+	z-index:100;
+}
+#logo {
+	text-align: center;
+	margin: 10px 0;
+}
+#nav {
+	font-size: 1.1em;
+	text-align: right;
+	margin: 34px 0 0 0;
+	color: #666;
+}
+.navigation{
+	float: right;
+	list-style: none;
+	margin: 0;
+}
+
+.navigation a:link{
+	color: #666;
+}
+
+.navigation li{
+	float: left;
+	padding:0 0 0 50px;
+}
+.navigation li:hover{
+	cursor:pointer;
+	color: #bbb;
+}
+
+.navigation .active{
+	cursor:pointer;
+	color: #cc1b24;
+	font-weight:bold;
+}
+
+.navigation .active:hover{
+	cursor:pointer;
+	color: #f09196;
+	font-weight:bold;
+}
+
+.downloadButton {
+	/*color: #cc1b24;*/
+	font-weight:bold;
+}
+
+/* General Slides */ 
+
+.slide{
+	background-attachment: fixed;
+	width:100%;
+	height:auto;
+	position: relative;
+	margin-bottom: -6px;
+}
+
+
+/* Slide 1 */ 
+
+#slide1{
+	background-color:#989491;
+	background:url('../images/BackgroundBus1.jpg') no-repeat center center fixed; 
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+	background-position: 0px 0px;
+	padding:150px 0 0 0;
+}
+
+#slide1 h1 {
+	color: #FFF;
+	
+	font-size: 3.4em;
+	font-weight: 600;
+	letter-spacing: -2px;
+	line-height: 0px;
+	
+	margin-bottom: 0.6em;
+}
+#slide1 h2 {
+	font-size: 2em;
+	color: #FFF;
+	line-height: 1em;
+	font-weight: 400;
+}
+
+
+/* Slide 2 */ 
+
+#slide2{
+	background-color:#fff;
+	color:#666;
+	text-align: center;
+	
+	padding: 60px 0 0 0;
+}
+#slide2 h1 {
+	font-size: 3.4em;
+	font-weight: 600;
+	letter-spacing: -2px;
+	line-height: 0px;
+	
+	margin-bottom: 0.6em;
+}
+#slide2 h2 {
+	font-size: 2em;
+	line-height: 1em;
+	font-weight: 400;
+}
+
+
+
+/* Slide 3 */ 
+
+#slide3{
+	background-color:#989491;
+	background:url('../images/BackgroundBus3.jpg') no-repeat center center fixed; 
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+	background-position: 0px 0px;
+	
+	padding: 60px 0 0 0;
+}
+#slide3 h1 {
+	color: #FFF;
+	
+	font-size: 3.4em;
+	font-weight: 600;
+	letter-spacing: -2px;
+	line-height: 0px;
+	
+	margin-bottom: 0.6em;
+}
+#slide3 h2 {
+	font-size: 2em;
+	color: #fff;
+	line-height: 1em;
+	font-weight: 400;
+}
+
+#test{
+	background-color:#bde2df;
+	color:#ffffff;
+	text-align:center;
+	font-size: 2em;
+	font-weight: 400;
+}
+
+
+
+
+/* Slide 4 */
+
+#slide4{
+	background-color:#fff;
+	color:#666;
+	text-align: center;
+	
+	padding: 60px 0 60px 0;
+}
+#slide4 h1 {
+	font-size: 3.8em;
+	letter-spacing: -2px;
+	line-height: 0px;
+	color:#666;
+	font-weight: 700;
+	
+	margin-bottom: 0.6em;
+}
+#slide4 h2 {
+	font-size: 2em;
+	color: #666;
+	line-height: 1em;
+	font-weight: 400;
+}
+
+
+/* Phones */
+.phone_right {
+	text-align: right;
+	margin: 0;
+	padding: 0;
+}
+
+.phone_middle {
+	margin: 0;
+	padding: 0;
+}
+
+.phone_left {
+	text-align: left;
+	margin: 0;
+	padding: 0;
+}
+
+.phone_hide{
+	display: block;
+}
+
+
+/* Tablet */
+@media screen and (max-width: 1020px) {
+
+#logo {
+	width: 100%;
+	text-align: center;
+}
+
+#nav {
+	width:100%;
+	text-align:center;
+	margin:10px 0;
+}
+
+.navigation{
+	width: 100%;
+	float: center;
+	list-style: none;
+	margin: 0;
+	padding:0;
+}
+
+.navigation li{
+	float: left;
+	width:33%;
+	padding:0;
+}
+
+.slide{
+	background-attachment: fixed;
+	width:100%;
+	position: relative;
+	padding:150px 0;
+}
+
+#decorative {
+	display:none;
+}
+
+#content {
+	text-align:center;
+	width:100%;
+}
+
+#slide1 h1 {
+	line-height: 1em;
+}
+#slide1 h2 {
+	line-height: 1em;
+}
+#slide2 h1 {
+	line-height: 1em;
+}
+#slide2 h2 {
+	line-height: 1em;
+}
+#slide3 h1 {
+	line-height: 1em;
+}
+#slide3 h2 {
+	line-height: 1em;
+}
+#slide4 h1 {
+	line-height: 1em;
+}
+#slide4 h2 {
+	line-height: 1em;
+}
+
+.phone_hide{
+	display: none;
+}
+
+}
+
+
+/* Mobile */
+@media screen and (max-width: 480px) {
+
+#logo {
+	width: 100%;
+	text-align: center;
+}
+
+#nav {
+	width:100%;
+	margin:5px 0 15px 0;
+}
+
+.navigation{
+	width: 100%;
+	float: left;
+	list-style: none;
+	margin: 0;
+	padding:0;
+}
+
+.navigation li{
+	float: left;
+	width:33%;
+}
+
+.slide{
+	background-attachment: fixed;
+	width:100%;
+	position: relative;
+	padding:150px 0;
+}
+
+
+#slide1 h1 {
+	font-size: 3.5em;
+	line-height: 1em;
+}
+#slide1 h2 {
+	line-height: 1em;
+}
+#slide2 h1 {
+	font-size: 3.5em;
+	line-height: 1em;
+}
+#slide2 h2 {
+	line-height: 1em;
+}
+#slide3 h1 {
+	font-size: 3.5em;
+	line-height: 1em;
+}
+#slide3 h2 {
+	line-height: 1em;
+}
+#slide4 h1 {
+	font-size: 3.5em;
+	line-height: 1em;
+}
+#slide4 h2 {
+	line-height: 1em;
+}
+
+/* Phones */
+.phone_right {
+	padding-top: 1.4em;
+}
+
+.phone_middle {
+	padding-top: 1.4em;
+}
+
+.phone_left {
+	padding-top: 1.4em;
+}
+
+.phone_hide{
+	display: none;
+}
+
+}
+
+
+
+
