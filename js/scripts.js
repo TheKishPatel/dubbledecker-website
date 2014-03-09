@@ -38,18 +38,18 @@ jQuery(document).ready(function ($) {
 
 
 
-    links.click(function (e) {
-        e.preventDefault();
-        dataslide = $(this).attr('data-slide');
-        goToByScroll(dataslide);
-    });
+    // links.click(function (e) {
+    //     e.preventDefault();
+    //     dataslide = $(this).attr('data-slide');
+    //     goToByScroll(dataslide);
+    // });
 
-    button.click(function (e) {
-        e.preventDefault();
-        dataslide = $(this).attr('data-slide');
-        goToByScroll(dataslide);
+    // button.click(function (e) {
+    //     e.preventDefault();
+    //     dataslide = $(this).attr('data-slide');
+    //     goToByScroll(dataslide);
 
-    });
+    // });
 
 
 });

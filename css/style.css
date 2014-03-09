@@ -43,14 +43,14 @@ p {
 	z-index:100;
 }
 #logo {
-	text-align: center;
+	text-align: left;
 	margin: 10px 0;
 }
 #nav {
 	font-size: 1.1em;
 	text-align: right;
-	margin: 34px 0 0 0;
-	color: #666;
+	margin:13px 0 7px 0;
+	color: #666; 
 }
 .navigation{
 	float: right;
@@ -64,7 +64,7 @@ p {
 
 .navigation li{
 	float: left;
-	padding:0 0 0 50px;
+	padding:0 0 0 30px;
 }
 .navigation li:hover{
 	cursor:pointer;
@@ -88,6 +88,10 @@ p {
 	font-weight:bold;
 }
 
+#btnSocial{
+	text-align: right;;
+}
+
 /* General Slides */ 
 
 .slide{
@@ -109,7 +113,7 @@ p {
 	-o-background-size: cover;
 	background-size: cover;
 	background-position: 0px 0px;
-	padding:150px 0 0 0;
+	padding:180px 0 0 0;
 }
 
 #slide1 h1 {
@@ -119,7 +123,6 @@ p {
 	font-weight: 600;
 	letter-spacing: -2px;
 	line-height: 0px;
-	
 	margin-bottom: 0.6em;
 }
 #slide1 h2 {
@@ -249,19 +252,18 @@ p {
 @media screen and (max-width: 1020px) {
 
 #logo {
-	width: 100%;
-	text-align: center;
+	/*width:100%;*/
+	text-align: left;
 }
 
+
 #nav {
-	width:100%;
-	text-align:center;
-	margin:10px 0;
+	/*width:100%;*/
+	text-align:right;
 }
 
 .navigation{
-	width: 100%;
-	float: center;
+	float: right;
 	list-style: none;
 	margin: 0;
 	padding:0;
@@ -269,8 +271,15 @@ p {
 
 .navigation li{
 	float: left;
-	width:33%;
-	padding:0;
+	padding:0 0 0 26px;
+}
+
+#btnSocial{
+	text-align: right;
+}
+
+#btnDL {
+	text-align: right;
 }
 
 .slide{
@@ -290,7 +299,7 @@ p {
 }
 
 #slide1 h1 {
-	line-height: 1em;
+	line-height: 1em;	
 }
 #slide1 h2 {
 	line-height: 1em;
@@ -320,18 +329,33 @@ p {
 
 }
 
+/* Nav Padding */
+@media screen and (max-width: 600px) {
+
+.navigation li{
+	padding:0 0 0 5px;
+}
+
+#btnSocial{
+	display: none;
+}
+
+#btnDL {
+	width: 100%;
+	text-align: right;
+}
+}
 
 /* Mobile */
 @media screen and (max-width: 480px) {
 
 #logo {
-	width: 100%;
-	text-align: center;
+	width: 50%;
+	text-align: left;
 }
 
 #nav {
-	width:100%;
-	margin:5px 0 15px 0;
+	width:50%;
 }
 
 .navigation{
@@ -343,8 +367,21 @@ p {
 }
 
 .navigation li{
-	float: left;
-	width:33%;
+	padding:0 0 0 5px;
+}
+
+#btnSocial{
+	display: none;
+}
+
+#btnDL {
+	width: 100%;
+	text-align: right;
+}
+
+.slide1Icon {
+	width: 360px;
+	height: 140px;
 }
 
 .slide{
