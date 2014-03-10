@@ -4,7 +4,7 @@ body {
 	font-family: Avenir, 'Open Sans', sans-serif;
 	font-weight: 400;
 	font-size: 1em;
-	color: #fff;
+	color: rgba(255, 255, 255, 0.8);
 	background-color:#989491;
 }
 img {
@@ -28,7 +28,10 @@ p {
 	line-height: 1.2em;
 }
 
-
+h3 {
+	font-size: 1.4em;
+	font-weight: 200;
+}
 
 
 /* Navigation */
@@ -43,10 +46,29 @@ p {
 	z-index:100;
 }
 #logo {
+	width: 50%;
+	height: 65px;
 	text-align: left;
 	margin: 10px 0;
+	background: url('../images/logo.png') no-repeat left;
 }
+
+#logo a{
+	display: block;
+	height: 100%;
+	width: 234px;
+
+	opacity:1.0;
+	filter:alpha(opacity=100);
+}
+
+#logo:hover{
+	opacity:0.6;
+	filter:alpha(opacity=60);
+}
+
 #nav {
+	width: 50%;
 	font-size: 1.1em;
 	text-align: right;
 	margin:13px 0 7px 0;
@@ -83,13 +105,55 @@ p {
 	font-weight:bold;
 }
 
-.downloadButton {
-	/*color: #cc1b24;*/
-	font-weight:bold;
+
+#btnTwitter {
+	background: url('../images/ButtonNavBarTwitter.png') no-repeat right;
+	text-align: right;
+	width: 38px;
+	height: 65px;
+
+	text-indent: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+
+   	opacity:1.0;
+	filter:alpha(opacity=100);
 }
 
-#btnSocial{
-	text-align: right;;
+#btnTwitter:hover {
+	opacity:0.6;
+	filter:alpha(opacity=60);
+}
+
+#btnTwitter a{
+	display: block;
+	width: 38px;
+	height: 65px;
+}
+
+#btnFacebook {
+	background: url('../images/ButtonNavBarFacebook.png') no-repeat right;
+	text-align: right;
+	width: 38px;
+	height: 65px;
+
+	text-indent: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+   	
+   	opacity:1.0;
+	filter:alpha(opacity=100);
+}
+
+#btnFacebook:hover {
+	opacity:0.6;
+	filter:alpha(opacity=60);
+}
+
+#btnFacebook a{
+	display: block;
+	width: 38px;
+	height: 65px;
 }
 
 /* General Slides */ 
@@ -136,17 +200,31 @@ p {
 /* Slide 2 */ 
 
 #slide2{
-	background-color:#fff;
-	color:#666;
+	background-image: -webkit-gradient(
+		linear,
+		left top,
+		left bottom,
+		color-stop(0, #FFFFFF),
+		color-stop(1, #DEDEDE),
+		color-stop(1, #FFFFFF)
+	);
+	background-image: -o-linear-gradient(bottom, #FFFFFF 0%, #DEDEDE 100%, #FFFFFF 100%);
+	background-image: -moz-linear-gradient(bottom, #FFFFFF 0%, #DEDEDE 100%, #FFFFFF 100%);
+	background-image: -webkit-linear-gradient(bottom, #FFFFFF 0%, #DEDEDE 100%, #FFFFFF 100%);
+	background-image: -ms-linear-gradient(bottom, #FFFFFF 0%, #DEDEDE 100%, #FFFFFF 100%);
+	background-image: linear-gradient(to bottom, #FFFFFF 0%, #DEDEDE 100%, #FFFFFF 100%);
+
+	color:rgba(102, 102, 102, 0.8);
 	text-align: center;
 	
-	padding: 60px 0 0 0;
+	padding: 40px 0 0 0;
 }
 #slide2 h1 {
 	font-size: 3.4em;
 	font-weight: 600;
 	letter-spacing: -2px;
 	line-height: 0px;
+	color: #666;
 	
 	margin-bottom: 0.6em;
 }
@@ -156,6 +234,9 @@ p {
 	font-weight: 400;
 }
 
+#slide2 h3{
+	margin-bottom: 40px;
+}
 
 
 /* Slide 3 */ 
@@ -230,15 +311,24 @@ p {
 	text-align: right;
 	margin: 0;
 	padding: 0;
+	width: 33.3%;
 }
 
 .phone_middle {
 	margin: 0;
 	padding: 0;
+	width: 33.3%;
 }
 
 .phone_left {
 	text-align: left;
+	margin: 0;
+	padding: 0;
+	width: 33.3%;
+}
+
+.phone_single {
+	text-align: right;
 	margin: 0;
 	padding: 0;
 }
@@ -274,7 +364,11 @@ p {
 	padding:0 0 0 26px;
 }
 
-#btnSocial{
+#btnTwitter {
+	text-align: right;
+}
+
+#btnFacebook {
 	text-align: right;
 }
 
@@ -298,20 +392,35 @@ p {
 	width:100%;
 }
 
+#slide1 {
+	padding:100px 0 0 0;
+}
+
+#slide2 {
+	padding: 10px 0 0 0;
+}
+
+#slide3 {
+	padding: 10px 0 0 0;
+}
+
 #slide1 h1 {
-	line-height: 1em;	
+	line-height: 1em;
+	margin-bottom: -0.2em;	
 }
 #slide1 h2 {
 	line-height: 1em;
 }
 #slide2 h1 {
 	line-height: 1em;
+	margin-bottom: -0.2em;
 }
 #slide2 h2 {
 	line-height: 1em;
 }
 #slide3 h1 {
 	line-height: 1em;
+	margin-bottom: -0.2em;
 }
 #slide3 h2 {
 	line-height: 1em;
@@ -330,13 +439,39 @@ p {
 }
 
 /* Nav Padding */
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 670px) {
+
+#logo {
+	background-position: -64px 0;
+	width: 40%;
+}
+
+#nav {
+	width:60%;
+}
+
+}
+
+@media screen and (max-width: 620px) {
+
+#logo {
+	width: 50%;
+	text-align: left;
+}
+
+#nav {
+	width:50%;
+}
 
 .navigation li{
 	padding:0 0 0 5px;
 }
 
-#btnSocial{
+#btnTwitter {
+	display: none;
+}
+
+#btnFacebook {
 	display: none;
 }
 
@@ -370,7 +505,12 @@ p {
 	padding:0 0 0 5px;
 }
 
-#btnSocial{
+
+#btnTwitter {
+	display: none;
+}
+
+#btnFacebook {
 	display: none;
 }
 
@@ -389,6 +529,10 @@ p {
 	width:100%;
 	position: relative;
 	padding:150px 0;
+}
+
+#slide2 h3 {
+	margin-bottom: 30px;
 }
 
 
@@ -436,6 +580,10 @@ p {
 
 .phone_hide{
 	display: none;
+}
+
+.phone_single {
+	padding-top: 1.4em;
 }
 
 }
