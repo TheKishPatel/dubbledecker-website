@@ -266,10 +266,10 @@ h5 {
 	font-size: 3.4em;
 	font-weight: 600;
 	letter-spacing: -2px;
-	line-height: 0px;
+	line-height: 1em;
 	color: #666;
 	
-	margin-bottom: 0.6em;
+	margin-bottom: -0.3em;
 }
 #slide2 h2 {
 	font-size: 2em;
@@ -459,7 +459,7 @@ h5 {
 	background-attachment: fixed;
 	width:100%;
 	position: relative;
-	padding:150px 0;
+	padding:150px 0 0 0;
 }
 
 #decorative {
@@ -565,7 +565,7 @@ h5 {
 	background-attachment: fixed;
 	width:100%;
 	position: relative;
-	padding:150px 0;
+	padding:150px 0 0 0;
 }
 
 #slide2 h3 {
@@ -595,6 +595,8 @@ h5 {
 	line-height: 1em;
 }
 
+
+
 #slideError h1 {
 	font-size: 3.5em;
 	line-height: 1em;
@@ -618,9 +620,13 @@ h5 {
 
 /* Phones */
 
-.phone{
-	width: 320px;
-	height: 461px;
+.phone {
+	height: 400px;
+}
+
+.phone img {
+	width: 280px;
+	vertical-align: bottom;
 }
 .phone_right {
 	padding-top: 1.4em;
@@ -645,11 +651,38 @@ h5 {
 }
 
 @media screen and (max-width: 320px) {
+
+h3 {
+	font-size: 1.2em;
+	padding-bottom: 10px;
+}
+
 #logo {
 	width: 48px;
 	text-align: left;
-	background-position: 0px 0;
+	background-position: 0 0;
 }
+
+#slide1 {
+	padding: 80px 0 0 0;
+}
+
+#slide2 {
+	padding: 0;
+}
+
+#slide3 {
+	padding: 0;
+}
+
+#slide3 h3 {
+	padding-bottom: 30px;
+}
+
+.phone_single {
+	padding-top: 0em;
+}
+
 }
 
 @media
