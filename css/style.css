@@ -652,6 +652,10 @@ h5 {
 
 @media screen and (max-width: 320px) {
 
+body {
+	font-size: 0.8em;
+}
+
 h3 {
 	font-size: 1.2em;
 	padding-bottom: 10px;
