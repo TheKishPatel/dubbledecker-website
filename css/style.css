@@ -345,8 +345,23 @@ h5 {
 	font-weight: 400;
 }
 
+#licenses{
+	color: #666;
+	background-color:#FFF;
+	margin-bottom: 70px;
+}
 
+#licenses h1 {
+	font-size: 2em;
+	line-height: 1em;
+	margin-bottom: -0.2em;
+	margin-top: 2.0em;
+}
 
+#licenses h3 {
+	font-size: 1.2em;
+	margin-bottom: -0.4em;
+}
 
 /* Footer Top */
 
