@@ -6,25 +6,11 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 	<meta name="viewport" content="width=device-width, initial-scale = 1.0, user-scalable = no">
-	<title>dubbledecker</title>
-	<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700,600' rel='stylesheet' type='text/css'>
-	<link rel="stylesheet" href="css/normalize.css" type="text/css" media="screen">
-	<link rel="stylesheet" href="css/grid.css" type="text/css" media="screen">
-	<link rel="stylesheet" href="css/style.css" type="text/css" media="screen">
+	<title>dubbledecker: London's Bus Network App - For iPhone</title>
 	<link rel="icon" type="image/png" href="favicon.png" />
 
 	<!-- <link rel="stylesheet" href="css/style.min.css" type="text/css" media="screen"> -->
 	<!--[if IE]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
-
-	<script>
-	  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-	  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-	  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-	  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-	  ga('create', 'UA-47894770-2', 'dubbledecker.com');
-	  ga('send', 'pageview', 'index.html');
-	</script>
 
 </head>
 
@@ -137,16 +123,56 @@
 		</div>
 	</div>
 
-	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-	<script type="text/javascript" src="js/jquery.stellar.min.js"></script>
-	<script type="text/javascript" src="js/waypoints.min.js"></script>
-	<script type="text/javascript" src="js/jquery.easing.1.3.js"></script>
-	<script type="text/javascript" src="js/retina-1.1.0.min.js"></script>
+	<!-- CSS Loading Optims -->
+	<script>
+	  var cb = function() {
+	    
+	    var style = document.createElement('link'); style.rel = 'stylesheet';
+	    style.href = 'css/style.css';
+	    
+	    var normalize = document.createElement('link'); normalize.rel = 'stylesheet';
+	    normalize.href = 'css/normalize.css';
+	    
+	    var grid = document.createElement('link'); grid.rel = 'stylesheet';
+	    grid.href = 'css/grid.css';
+	    
+	    var font = document.createElement('link'); font.rel = 'stylesheet';
+	    font.href = 'http://fonts.googleapis.com/css?family=Open+Sans:400,700,600';
+	    
+	    var h = document.getElementsByTagName('head')[0]; 
+	    h.parentNode.insertBefore(normalize, h); 
+	    h.parentNode.insertBefore(grid, h); 
+	    h.parentNode.insertBefore(font, h);
+   	    h.parentNode.insertBefore(style, h);
+	  };
+	  var raf = requestAnimationFrame || mozRequestAnimationFrame ||
+	      webkitRequestAnimationFrame || msRequestAnimationFrame;
+	  if (raf) raf(cb);
+	  else window.addEventListener('load', cb);
+	</script>
+
+	<!-- Google Analytics -->
+	<script>
+	  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	  })(window,document,'script','http://www.google-analytics.com/analytics.js','ga');
+
+	  ga('create', 'UA-47894770-2', 'dubbledecker.com');
+	  ga('send', 'pageview', 'index.html');
+	</script>
+	
+	<script async type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	<script async type="text/javascript" src="js/jquery.stellar.min.js"></script>
+	<script async type="text/javascript" src="js/waypoints.min.js"></script>
+	<script async type="text/javascript" src="js/jquery.easing.1.3.js"></script>
+	<script async type="text/javascript" src="js/retina-1.1.0.min.js"></script>
 
 	<script>
 	if (screen && screen.width > 480)
   		document.write('<script type="text/javascript" src="js/scripts.js"><\/script>');
 	</script>
+	
 	<!-- <script type="text/javascript" src="js/scripts.min.js"></script> -->
 </body>
 </html>
