@@ -109,16 +109,16 @@ export default function Experience() {
         />
 
         <header ref={headerRef} className="flex items-center justify-between px-5 pt-5 md:px-10 md:pt-8">
-          <a href="/" className="font-pacifico text-[26px] leading-none md:text-[32px]">
+          <a href="/" className="font-pacifico text-[24px] leading-none md:text-[28px]">
             Dubbledecker
           </a>
-          <AppStoreButton variant="light" size="md" />
+          <AppStoreButton size="md" className="md:hidden" />
+          <AppStoreButton size="lg" className="hidden md:inline-flex" />
         </header>
 
         <div className="grid flex-1 grid-cols-1 px-5 md:px-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)_minmax(0,1fr)] lg:items-center lg:gap-8 lg:pb-16">
-          <aside className="hidden flex-col items-start gap-10 lg:flex">
+          <aside className="hidden lg:block">
             <Quote />
-            <AppStoreButton variant="light" size="lg" />
           </aside>
           <div />
           <div className="hidden justify-self-end lg:block">
@@ -134,19 +134,18 @@ export default function Experience() {
       {/* what the app does, in words: the page's heading and the copy search engines read */}
       <section aria-labelledby="about" className="mx-auto max-w-[1200px] px-5 py-20 md:px-10 md:py-28">
         <h1 id="about" className="about-title max-w-[760px]">Live London bus, tram and river bus times for iPhone</h1>
-        <ul className="mt-14 grid gap-x-8 gap-y-10 sm:grid-cols-2 lg:grid-cols-4">
+        <ul className="mt-14 grid gap-x-8 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-x-6">
           {FEATURES.map(f => (
             <li key={f.id}>
-              <h2 className="text-[19px] font-medium tracking-[-0.01em]">{f.title}</h2>
-              <p className="mt-2 text-[15px] leading-relaxed text-white/70">{f.body}</p>
+              <h2 className="text-[20px] font-semibold leading-normal tracking-[-0.01em]">{f.heading ?? f.title}</h2>
+              <p className="mt-2 text-[14px] leading-normal text-white/85">{f.body}</p>
             </li>
           ))}
         </ul>
       </section>
 
-      <section className="flex flex-col items-center gap-10 px-5 py-20 text-center lg:hidden">
+      <section className="flex justify-center px-5 py-20 text-center md:px-10 lg:hidden">
         <Quote centred />
-        <AppStoreButton variant="light" size="lg" />
       </section>
 
       <Footer />
@@ -163,7 +162,7 @@ function Quote({ centred = false }: { centred?: boolean }) {
       <figcaption>
         <a href={GUARDIAN_URL} target="_blank" rel="noopener noreferrer" className="block transition-opacity hover:opacity-75">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/press/guardian-white.png" alt="Read the review in The Guardian" className="h-12 w-auto md:h-14" />
+          <img src="/press/guardian-white.png" alt="Read the review in The Guardian" className="h-9 w-auto" />
         </a>
       </figcaption>
     </figure>
@@ -180,11 +179,11 @@ function FeaturePills({ featureIdx, pick, layout }: FeaturePillsProps) {
   return (
     <ul
       aria-label="Features"
-      className={layout === 'list' ? 'flex flex-col items-start gap-2' : 'no-scrollbar flex gap-2 overflow-x-auto px-5 md:px-10'}
+      className={layout === 'list' ? 'flex flex-col items-end gap-2' : 'no-scrollbar flex gap-2 overflow-x-auto px-5 md:px-10'}
     >
       {FEATURES.map((f, i) => (
         <li key={f.id} className="pill-in shrink-0" style={{ animationDelay: `${300 + i * 60}ms` }}>
-          <button type="button" aria-pressed={i === featureIdx} onClick={() => pick(i)} className="pill">
+          <button type="button" aria-pressed={i === featureIdx} onClick={() => pick(i)} className="pill glass">
             {f.title}
           </button>
         </li>
