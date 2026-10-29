@@ -7,12 +7,17 @@ import { BACKGROUNDS, FEATURES, GUARDIAN_URL } from './features'
 
 type Studio = ReturnType<typeof import('./studio/engine.js').createStudio>
 
+// space kept clear above and below the phone on screens where the pills sit under it
+const PHONE_MARGIN = 32
+
 const reducedMotion = () => typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
 export default function Experience() {
   const [featureIdx, setFeatureIdx] = useState(0)
   const [shown, setShown] = useState(false)
   const canvasRef = useRef<HTMLCanvasElement>(null)
+  const headerRef = useRef<HTMLElement>(null)
+  const pillRowRef = useRef<HTMLDivElement>(null)
   const studioRef = useRef<Studio | null>(null)
 
   // each feature brings its own background and phone finish
@@ -42,9 +47,17 @@ export default function Experience() {
 
     const mq = window.matchMedia('(min-width: 1024px)')
     function frame() {
-      studioRef.current?.setFraming(mq.matches ? { zoom: 76, offsetY: -1 } : { zoom: 78, offsetY: 3 })
+      const canvas = canvasRef.current, header = headerRef.current, pillRow = pillRowRef.current
+      if (!canvas || !header || !pillRow) return
+      if (mq.matches) return studioRef.current?.setFraming({ zoom: 76, offsetY: -1 })
+      // below lg the pills sit under the phone: fit it, with a margin, to the space between the header and the
+      // pills. At zoom z the phone is z/110 of the canvas height (narrow screens fit it to the width instead).
+      const h = canvas.clientHeight, top = header.offsetHeight, bottom = pillRow.offsetHeight
+      const room = h - top - bottom - 2 * PHONE_MARGIN
+      studioRef.current?.setFraming({ zoom: Math.min(80, (110 * room) / h), offsetY: ((bottom - top) / 2 / h) * 100 })
     }
-    mq.addEventListener('change', frame)
+    const ro = new ResizeObserver(frame)
+    if (canvasRef.current) ro.observe(canvasRef.current)
 
     // the phone leans gently towards the pointer
     function onMove(e: PointerEvent) {
@@ -57,7 +70,7 @@ export default function Experience() {
 
     return () => {
       cancelled = true
-      mq.removeEventListener('change', frame)
+      ro.disconnect()
       window.removeEventListener('pointermove', onMove)
       studio?.dispose()
       studioRef.current = null
@@ -88,14 +101,14 @@ export default function Experience() {
             style={{ backgroundImage: `url(${b.image})`, opacity: b.id === bg.id ? 1 : 0 }}
           />
         ))}
-        <div aria-hidden className="hero-vignette absolute inset-0 -z-10" />
+        <div aria-hidden className="hero-vignette hero-fade absolute inset-0 -z-10" />
         <canvas
           ref={canvasRef}
           aria-hidden
-          className={`pointer-events-none absolute inset-0 -z-10 h-full w-full transition-[opacity,transform] duration-1000 ease-out ${shown ? 'opacity-100' : 'translate-y-6 opacity-0'}`}
+          className={`hero-fade-canvas pointer-events-none absolute inset-0 -z-10 h-full w-full transition-[opacity,transform] duration-1000 ease-out ${shown ? 'opacity-100' : 'translate-y-6 opacity-0'}`}
         />
 
-        <header className="flex items-center justify-between px-5 pt-5 md:px-10 md:pt-8">
+        <header ref={headerRef} className="flex items-center justify-between px-5 pt-5 md:px-10 md:pt-8">
           <a href="/" className="font-pacifico text-[26px] leading-none md:text-[32px]">
             Dubbledecker
           </a>
@@ -113,7 +126,7 @@ export default function Experience() {
           </div>
         </div>
 
-        <div className="sticky bottom-0 z-10 pb-[max(2.5rem,env(safe-area-inset-bottom))] pt-2 md:pb-14 lg:hidden">
+        <div ref={pillRowRef} className="sticky bottom-0 z-10 pb-[max(2.5rem,env(safe-area-inset-bottom))] pt-2 md:pb-14 lg:hidden">
           <FeaturePills {...pills} layout="row" />
         </div>
       </section>

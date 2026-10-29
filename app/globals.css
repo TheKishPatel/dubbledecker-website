@@ -74,6 +74,17 @@ body {
     linear-gradient(to bottom, rgb(255 255 255 / 0.04), transparent 30%);
 }
 
+/* the vignette and the phone's shadow fade out before the hero ends, so its edge doesn't show against the page;
+   the canvas fades over a fixed band below the phone, so the phone itself never fades */
+.hero-fade {
+  -webkit-mask-image: linear-gradient(to bottom, #000 78%, transparent);
+  mask-image: linear-gradient(to bottom, #000 78%, transparent);
+}
+.hero-fade-canvas {
+  -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 96px), transparent);
+  mask-image: linear-gradient(to bottom, #000 calc(100% - 96px), transparent);
+}
+
 
 .about-title {
   font-weight: 400;
