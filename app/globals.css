@@ -87,11 +87,21 @@ body {
 
 
 .about-title {
-  font-weight: 400;
-  font-size: clamp(32px, 4vw, 56px);
+  font-weight: 600;
+  font-size: 32px;
   line-height: 1.05;
   letter-spacing: -0.02em;
   text-wrap: balance;
+}
+@media (min-width: 768px) {
+  .about-title {
+    font-size: 48px;
+  }
+}
+@media (min-width: 1024px) {
+  .about-title {
+    font-size: 64px;
+  }
 }
 
 .quote {
@@ -105,7 +115,34 @@ body {
   font-weight: 600;
 }
 
+/* Frosted glass with a 1px edge that's brightest at the top and fades out by the middle, with a fainter
+   lift at the bottom; set --edge-top and --edge-bottom (0–1) per use */
+.glass {
+  position: relative;
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+}
+.glass::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  padding: 1px;
+  border-radius: inherit;
+  background: linear-gradient(
+    to bottom,
+    rgb(255 255 255 / var(--edge-top)),
+    rgb(255 255 255 / 0) 50%,
+    rgb(255 255 255 / var(--edge-bottom))
+  );
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
 .pill {
+  --edge-top: 0.3;
+  --edge-bottom: 0.12;
   display: inline-flex;
   align-items: center;
   height: 44px;
@@ -117,27 +154,30 @@ body {
   white-space: nowrap;
   color: white;
   background: rgb(255 255 255 / 0.14);
-  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.12);
-  -webkit-backdrop-filter: blur(16px) saturate(1.4);
-  backdrop-filter: blur(16px) saturate(1.4);
-  transition: background-color 200ms, color 200ms, transform 200ms;
+  transition: background-color 200ms, color 200ms, transform 200ms, padding 400ms cubic-bezier(0.2, 0.8, 0, 1);
 }
 .pill:hover {
   background: rgb(255 255 255 / 0.24);
+}
+/* the desktop list widens a hovered pill (it grows leftwards, the list is right-aligned) */
+@media (hover: hover) and (min-width: 1024px) {
+  .pill:hover {
+    padding: 0 24px;
+  }
 }
 .pill:active {
   transform: scale(0.97);
 }
 .pill[aria-pressed='true'] {
-  background: white;
+  --edge-top: 1;
+  --edge-bottom: 0.22;
+  background: rgb(255 255 255 / 0.8);
   color: var(--bg);
-  box-shadow: 0 6px 20px rgb(0 0 0 / 0.18);
 }
 .pill:focus-visible {
   outline: 2px solid white;
   outline-offset: 3px;
 }
-
 
 .pill-in {
   animation: pill-in 700ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
