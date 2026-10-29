@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "postbuild": "cp out/404.html out/error.html",
     "start": "npx serve out"
   },
   "dependencies": {

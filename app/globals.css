@@ -30,14 +30,6 @@ body {
 
 /* ─── Type ─── */
 
-.display-xl {
-  text-wrap: balance;
-  font-weight: 600;
-  font-size: clamp(46px, 7.6vw, 116px);
-  line-height: 0.95;
-  letter-spacing: -0.045em;
-}
-
 .display-lg {
   text-wrap: balance;
   font-weight: 600;
@@ -54,106 +46,10 @@ body {
   letter-spacing: -0.03em;
 }
 
-.statement {
-  font-weight: 600;
-  font-size: clamp(30px, 5.2vw, 76px);
-  line-height: 1;
-  letter-spacing: -0.035em;
-}
-
 .body-lg {
   font-size: clamp(18px, 1.45vw, 21px);
   line-height: 1.4;
   letter-spacing: -0.012em;
-}
-
-/* ─── Phone ─── */
-
-.phone {
-  position: relative;
-  padding: 3.4%;
-  border-radius: 16.4% / 7.86%;
-  background: #111;
-  box-shadow:
-    inset 0 0 0 1.5px #2e2e2e,
-    0 0 0 1.5px #c4c3be,
-    0 0 0 3px #e2e1dc,
-    0 50px 100px -30px rgb(0 0 0 / 0.35),
-    0 30px 60px -30px rgb(0 0 0 / 0.3);
-}
-
-.phone-screen {
-  position: relative;
-  aspect-ratio: 1206 / 2622;
-  border-radius: 14% / 6.45%;
-  overflow: hidden;
-  background: #fff;
-  /* Keeps Safari clipping video to the rounded corners. */
-  transform: translateZ(0);
-}
-
-.phone-screen video {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-/* ─── Motion ─── */
-
-.reveal {
-  opacity: 0;
-  transform: translateY(28px);
-  transition:
-    opacity 0.9s cubic-bezier(0.2, 0.7, 0.2, 1),
-    transform 0.9s cubic-bezier(0.2, 0.7, 0.2, 1);
-}
-
-.reveal.revealed {
-  opacity: 1;
-  transform: none;
-}
-
-@keyframes rise {
-  from {
-    opacity: 0;
-    transform: translateY(80px);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
-
-.rise {
-  animation: rise 1.4s cubic-bezier(0.2, 0.7, 0.2, 1) 0.2s both;
-}
-
-@keyframes chip-in {
-  from {
-    opacity: 0;
-    transform: scale(0.85);
-  }
-}
-
-.chip-in {
-  animation: chip-in 0.45s cubic-bezier(0.2, 0.7, 0.2, 1);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
-  .reveal {
-    transform: none;
-    transition: opacity 0.4s;
-  }
-  .rise,
-  .chip-in {
-    animation: none;
-  }
 }
 
 /* ─── "nice" footer mask — the Very Nice Software mark ─── */
@@ -178,6 +74,14 @@ body {
     linear-gradient(to bottom, rgb(255 255 255 / 0.04), transparent 30%);
 }
 
+
+.about-title {
+  font-weight: 400;
+  font-size: clamp(32px, 4vw, 56px);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
 
 .quote {
   font-weight: 400;
@@ -243,6 +147,9 @@ body {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
   .pill-in {
     animation: none;
   }

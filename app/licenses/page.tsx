@@ -1,12 +1,15 @@
 import type { Metadata } from 'next'
 import Footer from '@/components/Footer'
+import { PATHS, pageMetadata } from '@/lib/site'
 import licenses from './licenses.json'
 
 // Linked from the app's Info screen as dubbledecker.com/licenses.html — the
 // static export writes this route to exactly that file.
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: 'Licences — Dubbledecker',
-}
+  description: 'Open source licences for the libraries and data used in Dubbledecker.',
+  path: PATHS.licenses,
+})
 
 export default function Licenses() {
   return (

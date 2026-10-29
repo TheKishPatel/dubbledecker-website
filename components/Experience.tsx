@@ -18,6 +18,9 @@ export default function Experience() {
   // each feature brings its own background and phone finish
   const feature = FEATURES[featureIdx]
   const bg = BACKGROUNDS.find(b => b.id === feature.bg) ?? BACKGROUNDS[0]
+  // the engine loads asynchronously, so it reads the feature picked by then, not the one from first render
+  const latest = useRef({ feature, bg })
+  latest.current = { feature, bg }
 
   // boot the 3D phone once; wait briefly for the detailed model so it doesn't swap in after the fade
   useEffect(() => {
@@ -27,12 +30,13 @@ export default function Experience() {
       if (cancelled || !canvasRef.current) return
       studio = createStudio(canvasRef.current)
       studioRef.current = studio
-      studio.setBackground(bg.color)
-      studio.setFinish(feature.finish)
+      studio.setBackground(latest.current.bg.color)
+      studio.setFinish(latest.current.feature.finish)
       frame()
       await Promise.race([studio.ready, new Promise(r => setTimeout(r, 6000))])
       if (cancelled) return
-      await studio.setScreen(feature.screen, { animate: false })
+      // show the phone even if its screen didn't load; the next pick retries
+      await studio.setScreen(latest.current.feature.screen, { animate: false })
       if (!cancelled) setShown(true)
     })
 
@@ -98,8 +102,6 @@ export default function Experience() {
           <AppStoreButton variant="light" size="md" />
         </header>
 
-        <h1 className="sr-only">Dubbledecker: live London bus, tram and river bus times for iPhone</h1>
-
         <div className="grid flex-1 grid-cols-1 px-5 md:px-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)_minmax(0,1fr)] lg:items-center lg:gap-8 lg:pb-16">
           <aside className="hidden flex-col items-start gap-10 lg:flex">
             <Quote />
@@ -111,9 +113,22 @@ export default function Experience() {
           </div>
         </div>
 
-        <div className="sticky bottom-0 z-10 pb-4 pt-2 lg:hidden">
+        <div className="sticky bottom-0 z-10 pb-[max(2.5rem,env(safe-area-inset-bottom))] pt-2 md:pb-14 lg:hidden">
           <FeaturePills {...pills} layout="row" />
         </div>
+      </section>
+
+      {/* what the app does, in words: the page's heading and the copy search engines read */}
+      <section aria-labelledby="about" className="mx-auto max-w-[1200px] px-5 py-20 md:px-10 md:py-28">
+        <h1 id="about" className="about-title max-w-[760px]">Live London bus, tram and river bus times for iPhone</h1>
+        <ul className="mt-14 grid gap-x-8 gap-y-10 sm:grid-cols-2 lg:grid-cols-4">
+          {FEATURES.map(f => (
+            <li key={f.id}>
+              <h2 className="text-[19px] font-medium tracking-[-0.01em]">{f.title}</h2>
+              <p className="mt-2 text-[15px] leading-relaxed text-white/70">{f.body}</p>
+            </li>
+          ))}
+        </ul>
       </section>
 
       <section className="flex flex-col items-center gap-10 px-5 py-20 text-center lg:hidden">
