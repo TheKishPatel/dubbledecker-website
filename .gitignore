@@ -4,5 +4,3 @@ out
 .DS_Store
 *.tsbuildinfo
 
-# Sketchfab Free Standard licence: confirm web hosting is allowed before committing
-public/models/*.glb

@@ -6,6 +6,7 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js'
 import { FullScreenQuad } from 'three/addons/postprocessing/Pass.js'
 import { HorizontalBlurShader } from 'three/addons/shaders/HorizontalBlurShader.js'
 import { VerticalBlurShader } from 'three/addons/shaders/VerticalBlurShader.js'
+import { HDR_URL, MODEL_URL } from './assets.js'
 
 const D2R = Math.PI / 180
 const clamp = (v, a, b) => Math.min(b, Math.max(a, v))
@@ -34,8 +35,6 @@ function cubicBezier(x1, y1, x2, y2) {
 const turnEase = cubicBezier(0.2, 0.8, 0, 1)
 
 const IMG_W = 1206, IMG_H = 2622
-const MODEL_URL = '/models/iphone-pro-max.glb'
-const HDR_URL = '/hdr/studio_small_09.hdr'
 
 // back panel stays within ~5% lightness of the frame so it reads as one unibody
 export const FINISHES = {
@@ -109,7 +108,7 @@ const DETAILED = {
   finish: /^COLOUR_/, frameMat: 'COLOUR_Cherry_Side_Panel',
 }
 
-export function createStudio(canvas, { onReady } = {}) {
+export function createStudio(canvas) {
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: 'high-performance' })
   renderer.outputColorSpace = THREE.SRGBColorSpace
   renderer.toneMapping = THREE.NeutralToneMapping
@@ -286,7 +285,12 @@ export function createStudio(canvas, { onReady } = {}) {
       t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = renderer.capabilities.getMaxAnisotropy(); res(t)
     }, undefined, e => { delete texCache[url]; rej(e) })))
   }
-  function showTexture(tex) { screenMat.map = tex; screenMat.color.set(0xffffff); screenMat.needsUpdate = true; touch() }
+  // only the showing screen stays on the GPU (~8 MB each with mipmaps); a cached texture re-uploads when shown again
+  function showTexture(tex) {
+    const prev = screenMat.map
+    screenMat.map = tex; screenMat.color.set(0xffffff); screenMat.needsUpdate = true; touch()
+    if (prev && prev !== tex) prev.dispose()
+  }
 
   // ---- lighting: HDRI studio + light shapes, baked into one environment
   const envScene = new THREE.Scene()
@@ -528,20 +532,26 @@ export function createStudio(canvas, { onReady } = {}) {
   let screenUrl = null, screenReq = 0
   return {
     ready: modelReady,
-    // a finish passed here changes with the screen, while the back is to the camera
+    // A finish passed here changes with the screen, while the back is to the camera.
+    // Resolves false (and forgets the url, so it can be retried) if the image doesn't load.
     /** @param {string} url @param {{ animate?: boolean, finish?: string }} [opts] */
     async setScreen(url, { animate = true, finish: finishId } = {}) {
-      if (url === screenUrl) return
+      if (url === screenUrl) return true
       screenUrl = url
       const token = ++screenReq
-      const tex = await loadScreen(url)
-      if (token !== screenReq || disposed) return
+      let tex
+      try { tex = await loadScreen(url) } catch {
+        if (token === screenReq) screenUrl = null
+        return false
+      }
+      if (token !== screenReq || disposed) return false
       const swap = () => { if (finishId) { finish = FINISHES[finishId] || FINISHES.ddred; applyFinish() } showTexture(tex) }
-      if (!animate || !screenMat.map) { turn = null; swap(); onReady?.(); return }
+      if (!animate || !screenMat.map) { turn = null; swap(); return true }
       // mid-turn: before the swap, retarget it; after, queue another turn so the screen never changes face-on
       if (turn && !turn.swapped) turn.swap = swap
       else if (turn) turn.next = () => startTurn(swap)
       else startTurn(swap)
+      return true
     },
     setFinish(id) { finish = FINISHES[id] || FINISHES.ddred; applyFinish() },
     // shadow tint from the page background, as in Phone Studio's "Tint shadow"

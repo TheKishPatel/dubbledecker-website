@@ -1,13 +1,17 @@
+import { PATHS } from '@/lib/site'
+import CurrentYear from './CurrentYear'
+
+const BUILD_YEAR = new Date().getFullYear()
+
 const links = [
   { label: 'Support', href: 'mailto:dubbledecker@kishpatel.com?subject=Dubbledecker%20support' },
   { label: 'Contact', href: 'mailto:dubbledecker@kishpatel.com?subject=Contact%20Dubbledecker' },
   { label: 'verynicesoftware.com', href: 'https://verynicesoftware.com' },
-  { label: 'Privacy', href: '/privacy.html' },
-  { label: 'Licences', href: '/licenses.html' },
+  { label: 'Privacy', href: PATHS.privacy },
+  { label: 'Licences', href: PATHS.licenses },
 ]
 
 export default function Footer() {
-  const year = new Date().getFullYear()
   return (
     // follows the homepage's feature colour (--bg); brand red on the other pages
     <footer className="border-t border-white/15 bg-[var(--bg,var(--dd-red))] text-white transition-colors duration-700 ease-out">
@@ -20,7 +24,7 @@ export default function Footer() {
           ))}
         </nav>
         <div className="flex max-w-[640px] flex-col gap-2 text-[12px] leading-relaxed text-white/50">
-          <p>© {year} Very Nice Software Limited. All rights reserved.</p>
+          <p>© <CurrentYear built={BUILD_YEAR} /> Very Nice Software Limited. All rights reserved.</p>
           <p>
             Powered by TfL Open Data. Contains OS data © Crown copyright and database rights. Dubbledecker is not
             affiliated with or endorsed by Transport for London.

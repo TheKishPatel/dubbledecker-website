@@ -1,12 +1,12 @@
 import type { Metadata } from 'next'
+import { preload } from 'react-dom'
 import { APP_STORE_URL } from '@/components/AppStoreButton'
 import Experience from '@/components/Experience'
 import { FEATURES } from '@/components/features'
-import { SITE_URL, description } from '@/lib/site'
+import { HDR_URL, MODEL_URL } from '@/components/studio/assets.js'
+import { PATHS, SITE_URL, description, pageMetadata, title } from '@/lib/site'
 
-export const metadata: Metadata = {
-  alternates: { canonical: '/' },
-}
+export const metadata: Metadata = pageMetadata({ title, description, path: PATHS.home })
 
 // App details for Google (schema.org MobileApplication)
 const jsonLd = {
@@ -26,6 +26,11 @@ const jsonLd = {
 }
 
 export default function Home() {
+  // the hero's downloads, started from the HTML rather than after the 3D engine boots;
+  // crossOrigin matches three's loaders (fetch and <img crossorigin>) so the browser reuses them
+  preload(MODEL_URL, { as: 'fetch', crossOrigin: 'anonymous', fetchPriority: 'high' })
+  preload(HDR_URL, { as: 'fetch', crossOrigin: 'anonymous' })
+  preload(FEATURES[0].screen, { as: 'image', crossOrigin: 'anonymous' })
   return (
     <main>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
