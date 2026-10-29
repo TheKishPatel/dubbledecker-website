@@ -1,14 +1,8 @@
 import type { Metadata, Viewport } from 'next'
 import { GeistSans } from 'geist/font/sans'
-import { Press_Start_2P } from 'next/font/google'
 import localFont from 'next/font/local'
+import { SITE_URL, description, title } from '@/lib/site'
 import './globals.css'
-
-const pressStart2P = Press_Start_2P({
-  weight: '400',
-  subsets: ['latin'],
-  variable: '--font-press-start',
-})
 
 // The app's own wordmark face.
 const pacifico = localFont({
@@ -16,26 +10,29 @@ const pacifico = localFont({
   variable: '--font-pacifico',
 })
 
-const title = 'Dubbledecker — Live London bus times for iPhone'
-const description =
-  'Live arrivals for every bus stop and river pier in London. Saved stops, home screen widgets, route maps and timetables. Free on the App Store.'
-
+// Icons (favicon.ico, icon.png, apple-icon.png) come from app/ file conventions; the OG image is app/og.png/route.tsx.
 export const metadata: Metadata = {
-  metadataBase: new URL('https://dubbledecker.com'),
+  metadataBase: new URL(SITE_URL),
   title,
   description,
-  icons: { icon: '/app-icon.png', apple: '/app-icon.png' },
+  applicationName: 'Dubbledecker',
+  keywords: ['London bus times', 'live bus arrivals', 'TfL bus app', 'Croydon trams', 'river bus', 'Thames Clippers', 'bus stop widget', 'iPhone'],
+  category: 'travel',
+  creator: 'Very Nice Software Limited',
+  publisher: 'Very Nice Software Limited',
+  robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-image-preview': 'large', 'max-snippet': -1 } },
+  formatDetection: { telephone: false, address: false, email: false },
   itunes: { appId: '806904237' },
   openGraph: {
     title,
     description,
-    url: 'https://dubbledecker.com',
+    url: SITE_URL,
     siteName: 'Dubbledecker',
-    images: [{ url: '/og.jpg', width: 1200, height: 630 }],
     locale: 'en_GB',
     type: 'website',
+    images: [{ url: '/og.png', width: 1200, height: 630, alt: 'Dubbledecker: real time London bus arrivals for iPhone' }],
   },
-  twitter: { card: 'summary_large_image', title, description, images: ['/og.jpg'] },
+  twitter: { card: 'summary_large_image', title, description, images: ['/og.png'] },
 }
 
 export const viewport: Viewport = {
@@ -45,7 +42,7 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en-GB">
-      <body className={`${GeistSans.variable} ${pacifico.variable} ${pressStart2P.variable} font-sans`}>
+      <body className={`${GeistSans.variable} ${pacifico.variable} font-sans`}>
         {children}
       </body>
     </html>

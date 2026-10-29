@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 export default function Privacy() {
   return (
     <main>
-      <article className="mx-auto max-w-[720px] px-5 pt-16 md:px-8 md:pt-24">
+      <article className="mx-auto max-w-[720px] px-5 pb-24 pt-16 md:px-8 md:pb-32 md:pt-24">
         <a href="/" className="font-pacifico text-[28px] text-[var(--dd-red)]">
           Dubbledecker
         </a>

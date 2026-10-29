@@ -13,7 +13,6 @@ const config: Config = {
         // SF Pro on Apple devices, matching the App Store screenshots
         display: ['-apple-system', 'BlinkMacSystemFont', '"SF Pro Display"', 'var(--font-geist-sans)', 'system-ui', 'sans-serif'],
         pacifico: ['var(--font-pacifico)', 'cursive'],
-        'press-start': ['var(--font-press-start)', 'monospace'],
       },
     },
   },

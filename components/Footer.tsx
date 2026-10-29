@@ -9,7 +9,8 @@ const links = [
 export default function Footer() {
   const year = new Date().getFullYear()
   return (
-    <footer className="border-t border-white/15">
+    // follows the homepage's feature colour (--bg); brand red on the other pages
+    <footer className="border-t border-white/15 bg-[var(--bg,var(--dd-red))] text-white transition-colors duration-700 ease-out">
       <div className="mx-auto flex max-w-[1200px] flex-col items-center gap-8 px-5 pt-16 text-center md:px-8 md:pt-20">
         <nav className="flex flex-wrap justify-center gap-x-7 gap-y-2 text-[15px] font-medium tracking-[-0.01em]">
           {links.map(l => (
