@@ -10,7 +10,28 @@ import { VerticalBlurShader } from 'three/addons/shaders/VerticalBlurShader.js'
 const D2R = Math.PI / 180
 const clamp = (v, a, b) => Math.min(b, Math.max(a, v))
 const wrap = v => ((v + 180) % 360 + 360) % 360 - 180
-const easeInOut = t => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2)
+// CSS-style cubic-bezier(x1, y1, x2, y2): solve x(s) = t for s (Newton, then bisection), return y(s)
+function cubicBezier(x1, y1, x2, y2) {
+  const ax = 3 * x1 - 3 * x2 + 1, bx = 3 * x2 - 6 * x1, cx = 3 * x1
+  const ay = 3 * y1 - 3 * y2 + 1, by = 3 * y2 - 6 * y1, cy = 3 * y1
+  const x = s => ((ax * s + bx) * s + cx) * s, y = s => ((ay * s + by) * s + cy) * s
+  const dx = s => (3 * ax * s + 2 * bx) * s + cx
+  return t => {
+    if (t <= 0) return 0
+    if (t >= 1) return 1
+    let s = t
+    for (let i = 0; i < 8; i++) {
+      const e = x(s) - t, d = dx(s)
+      if (Math.abs(e) < 1e-6) return y(s)
+      if (Math.abs(d) < 1e-6) break
+      s -= e / d
+    }
+    let lo = 0, hi = 1; s = t
+    for (let i = 0; i < 30; i++) { const e = x(s) - t; if (Math.abs(e) < 1e-6) break; if (e > 0) hi = s; else lo = s; s = (lo + hi) / 2 }
+    return y(s)
+  }
+}
+const turnEase = cubicBezier(0.2, 0.8, 0, 1)
 
 const IMG_W = 1206, IMG_H = 2622
 const MODEL_URL = '/models/iphone-pro-max.glb'
@@ -366,22 +387,35 @@ export function createStudio(canvas, { onReady } = {}) {
     renderShadowLayer(castLayer, size, 300, true, ramp(Math.round(2 + SH_.soft * 1.1)), str)
   }
 
-  // ---- pose: a resting angle, a gentle follow of the pointer, and a full turn when the screen changes
+  // ---- pose: a resting angle, a gentle follow of the pointer, and a turn when the screen changes
   const BASE = { yaw: -14, pitch: 6, roll: 2, fov: 24, zoom: 100 }
   const target = { yaw: BASE.yaw, pitch: BASE.pitch }
   const cur = { yaw: BASE.yaw, pitch: BASE.pitch }
-  let turn = null   // {start, dur, dir, swap, swapped}
   let zoom = BASE.zoom, offsetY = 0
-  const _right = new THREE.Vector3(), _up = new THREE.Vector3()
-  function turnYaw(now) {
-    if (!turn) return 0
-    const t = clamp((now - turn.start) / turn.dur, 0, 1), y = easeInOut(t) * 360 * turn.dir
-    // swap the screen while the back is towards the camera
-    if (!turn.swapped && Math.abs(y) >= 180) { turn.swapped = true; turn.swap() }
-    if (t >= 1) { if (!turn.swapped) turn.swap(); turn = null; return 0 }
-    return y
+  const _up = new THREE.Vector3()
+
+  // A full spin about the vertical axis on the eased curve, turning the other way each time.
+  // The screen swaps halfway, while the back is to the camera.
+  const TURN_MS = 850
+  const NO_TURN = { yaw: 0 }
+  let turn = null, dir = -1
+  function startTurn(swap) {
+    dir = -dir
+    turn = { dir, start: performance.now(), swap, swapped: false, next: null }
+    touch()
   }
-  function frameCamera(aspect, yawExtra) {
+  function turnOffset(now) {
+    if (!turn) return NO_TURN
+    const t = clamp((now - turn.start) / TURN_MS, 0, 1), p = turnEase(t)
+    if (!turn.swapped && p >= 0.5) { turn.swapped = true; turn.swap() }
+    if (t >= 1) {
+      const next = turn.next; turn = null
+      if (next) next()
+      return NO_TURN
+    }
+    return { yaw: 360 * turn.dir * p }
+  }
+  function frameCamera(aspect, ex) {
     cam.fov = BASE.fov; cam.aspect = aspect
     const t = Math.tan(BASE.fov / 2 * D2R), k = 1.1 / (zoom / 100)
     const d = Math.max((EXT[1] / 2 * k) / t, (EXT[0] / 2 * 1.2 * k) / (t * aspect))
@@ -389,7 +423,7 @@ export function createStudio(canvas, { onReady } = {}) {
     cam.near = Math.max(d - 320, d * 0.25); cam.far = d + 1500; cam.updateProjectionMatrix(); cam.updateMatrixWorld()
     _up.setFromMatrixColumn(cam.matrixWorld, 1)
     rig.position.set(0, 0, 0).addScaledVector(_up, offsetY / 100 * 2 * d * t)
-    rig.rotation.set(cur.pitch * D2R, (cur.yaw + yawExtra) * D2R, BASE.roll * D2R)
+    rig.rotation.set(cur.pitch * D2R, (cur.yaw + ex.yaw) * D2R, BASE.roll * D2R)
     rig.updateMatrixWorld(true)
   }
 
@@ -437,7 +471,7 @@ export function createStudio(canvas, { onReady } = {}) {
     raf = requestAnimationFrame(tick)
     if (!visible) return
     const dt = Math.min((now - last) / 1000, 0.05); last = now
-    const yawExtra = turnYaw(now)
+    const ex = turnOffset(now)
     let moving = !!turn
     const a = 1 - Math.pow(0.0006, dt)
     for (const k of ['yaw', 'pitch']) {
@@ -445,21 +479,21 @@ export function createStudio(canvas, { onReady } = {}) {
       if (Math.abs(diff) > 0.01) { moving = true; cur[k] += diff * a } else cur[k] = target[k]
     }
     if (moving) touch()
-    const yaw = cur.yaw + yawExtra
+    const yaw = cur.yaw + ex.yaw
     if (Math.abs(wrap(yaw - envYaw)) > (turn ? 15 : 4)) envDirty = true
     if (envDirty && now - lastEnvBuild > 90) { buildEnv(yaw); lastEnvBuild = now; touch() }
     const settled = !moving && now - lastChange > 120
     const [w, h] = ensureAcc()
     if (!settled) {
-      frameCamera(viewW / viewH, yawExtra)
+      frameCamera(viewW / viewH, ex)
       if ((frame++ & 1) === 0) updateShadows()
       renderer.setRenderTarget(null); renderer.render(scene, cam)
       return
     }
     if (accK >= SAMPLES) return
-    if (accK === 0) { frameCamera(viewW / viewH, 0); updateShadows() }
+    if (accK === 0) { frameCamera(viewW / viewH, NO_TURN); updateShadows() }
     for (let i = 0; i < 2 && accK < SAMPLES; i++, accK++) {
-      frameCamera(viewW / viewH, 0); jitter(accK, w, h)
+      frameCamera(viewW / viewH, NO_TURN); jitter(accK, w, h)
       renderer.setRenderTarget(null); renderer.render(scene, cam)
       renderer.copyFramebufferToTexture(fbTex)
       const ac = renderer.autoClear; renderer.autoClear = false
@@ -494,16 +528,20 @@ export function createStudio(canvas, { onReady } = {}) {
   let screenUrl = null, screenReq = 0
   return {
     ready: modelReady,
-    async setScreen(url, { animate = true } = {}) {
+    // a finish passed here changes with the screen, while the back is to the camera
+    /** @param {string} url @param {{ animate?: boolean, finish?: string }} [opts] */
+    async setScreen(url, { animate = true, finish: finishId } = {}) {
       if (url === screenUrl) return
       screenUrl = url
       const token = ++screenReq
       const tex = await loadScreen(url)
       if (token !== screenReq || disposed) return
-      if (!animate || !screenMat.map) { turn = null; showTexture(tex); onReady?.(); return }
-      const dir = turn ? turn.dir : -1
-      turn = { start: performance.now(), dur: 1100, dir, swapped: false, swap: () => showTexture(tex) }
-      touch()
+      const swap = () => { if (finishId) { finish = FINISHES[finishId] || FINISHES.ddred; applyFinish() } showTexture(tex) }
+      if (!animate || !screenMat.map) { turn = null; swap(); onReady?.(); return }
+      // mid-turn: before the swap, retarget it; after, queue another turn so the screen never changes face-on
+      if (turn && !turn.swapped) turn.swap = swap
+      else if (turn) turn.next = () => startTurn(swap)
+      else startTurn(swap)
     },
     setFinish(id) { finish = FINISHES[id] || FINISHES.ddred; applyFinish() },
     // shadow tint from the page background, as in Phone Studio's "Tint shadow"

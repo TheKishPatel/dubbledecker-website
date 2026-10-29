@@ -8,7 +8,6 @@
     "start": "npx serve out"
   },
   "dependencies": {
-    "@paper-design/shaders-react": "^0.0.76",
     "geist": "^1.3.0",
     "next": "^15.3.0",
     "react": "^19.0.0",

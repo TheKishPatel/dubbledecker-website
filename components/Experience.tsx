@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState, type CSSProperties } from 'react'
 import AppStoreButton from './AppStoreButton'
 import Footer from './Footer'
-import { BACKGROUNDS, FEATURES, FINISHES, GUARDIAN_URL } from './features'
+import { BACKGROUNDS, FEATURES, GUARDIAN_URL } from './features'
 
 type Studio = ReturnType<typeof import('./studio/engine.js').createStudio>
 
@@ -11,20 +11,13 @@ const reducedMotion = () => typeof window !== 'undefined' && window.matchMedia('
 
 export default function Experience() {
   const [featureIdx, setFeatureIdx] = useState(0)
-  const [bgId, setBgId] = useState(FEATURES[0].bg)
-  const [finishId, setFinishId] = useState(FEATURES[0].finish)
   const [shown, setShown] = useState(false)
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const studioRef = useRef<Studio | null>(null)
 
+  // each feature brings its own background and phone finish
   const feature = FEATURES[featureIdx]
-  const bg = BACKGROUNDS.find(b => b.id === bgId) ?? BACKGROUNDS[0]
-
-  function pick(i: number) {
-    setFeatureIdx(i)
-    setBgId(FEATURES[i].bg)
-    setFinishId(FEATURES[i].finish)
-  }
+  const bg = BACKGROUNDS.find(b => b.id === feature.bg) ?? BACKGROUNDS[0]
 
   // boot the 3D phone once; wait briefly for the detailed model so it doesn't swap in after the fade
   useEffect(() => {
@@ -35,7 +28,7 @@ export default function Experience() {
       studio = createStudio(canvasRef.current)
       studioRef.current = studio
       studio.setBackground(bg.color)
-      studio.setFinish(finishId)
+      studio.setFinish(feature.finish)
       frame()
       await Promise.race([studio.ready, new Promise(r => setTimeout(r, 6000))])
       if (cancelled) return
@@ -45,7 +38,7 @@ export default function Experience() {
 
     const mq = window.matchMedia('(min-width: 1024px)')
     function frame() {
-      studioRef.current?.setFraming(mq.matches ? { zoom: 74, offsetY: -6 } : { zoom: 76, offsetY: 1 })
+      studioRef.current?.setFraming(mq.matches ? { zoom: 76, offsetY: -1 } : { zoom: 78, offsetY: 3 })
     }
     mq.addEventListener('change', frame)
 
@@ -69,12 +62,11 @@ export default function Experience() {
   }, [])
 
   useEffect(() => {
-    if (shown) studioRef.current?.setScreen(feature.screen, { animate: !reducedMotion() })
-  }, [feature.screen, shown])
+    if (shown) studioRef.current?.setScreen(feature.screen, { animate: !reducedMotion(), finish: feature.finish })
+  }, [feature.screen, feature.finish, shown])
   useEffect(() => { studioRef.current?.setBackground(bg.color) }, [bg.color])
-  useEffect(() => { studioRef.current?.setFinish(finishId) }, [finishId])
 
-  const controls = { featureIdx, pick, bgId, setBgId, finishId, setFinishId }
+  const pills = { featureIdx, pick: setFeatureIdx }
 
   return (
     <div
@@ -89,7 +81,7 @@ export default function Experience() {
             key={b.id}
             aria-hidden
             className="absolute inset-0 -z-20 scale-110 bg-cover bg-center blur-[2px] transition-opacity duration-700"
-            style={{ backgroundImage: `url(${b.image})`, opacity: b.id === bgId ? 1 : 0 }}
+            style={{ backgroundImage: `url(${b.image})`, opacity: b.id === bg.id ? 1 : 0 }}
           />
         ))}
         <div aria-hidden className="hero-vignette absolute inset-0 -z-10" />
@@ -108,10 +100,6 @@ export default function Experience() {
 
         <h1 className="sr-only">Dubbledecker: live London bus, tram and river bus times for iPhone</h1>
 
-        <p key={feature.id} aria-live="polite" className="feature-title px-5 pt-8 text-center md:pt-6">
-          {feature.title}
-        </p>
-
         <div className="grid flex-1 grid-cols-1 px-5 md:px-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)_minmax(0,1fr)] lg:items-center lg:gap-8 lg:pb-16">
           <aside className="hidden flex-col items-start gap-10 lg:flex">
             <Quote />
@@ -119,12 +107,12 @@ export default function Experience() {
           </aside>
           <div />
           <div className="hidden justify-self-end lg:block">
-            <Controls {...controls} layout="list" />
+            <FeaturePills {...pills} layout="list" />
           </div>
         </div>
 
         <div className="sticky bottom-0 z-10 pb-4 pt-2 lg:hidden">
-          <Controls {...controls} layout="row" />
+          <FeaturePills {...pills} layout="row" />
         </div>
       </section>
 
@@ -154,76 +142,25 @@ function Quote({ centred = false }: { centred?: boolean }) {
   )
 }
 
-type ControlsProps = {
+type FeaturePillsProps = {
   featureIdx: number
   pick: (i: number) => void
-  bgId: string
-  setBgId: (id: string) => void
-  finishId: string
-  setFinishId: (id: string) => void
   layout: 'list' | 'row'
 }
 
-function Controls({ featureIdx, pick, bgId, setBgId, finishId, setFinishId, layout }: ControlsProps) {
-  const list = layout === 'list'
+function FeaturePills({ featureIdx, pick, layout }: FeaturePillsProps) {
   return (
-    <div className={list ? 'flex flex-col items-start gap-8' : 'flex flex-col gap-3'}>
-      <ul
-        aria-label="Features"
-        className={list ? 'flex flex-col items-start gap-2' : 'no-scrollbar flex gap-2 overflow-x-auto px-5 md:px-10'}
-      >
-        {FEATURES.map((f, i) => (
-          <li key={f.id} className="pill-in shrink-0" style={{ animationDelay: `${300 + i * 60}ms` }}>
-            <button
-              type="button"
-              aria-pressed={i === featureIdx}
-              onClick={() => pick(i)}
-              className="pill"
-            >
-              {f.title}
-            </button>
-          </li>
-        ))}
-      </ul>
-
-      {/* row: centred when it fits, scrolls sideways when it doesn't */}
-      <div className={list ? 'flex flex-col gap-4' : 'no-scrollbar overflow-x-auto px-5'}>
-        <div className={list ? 'contents' : 'mx-auto flex w-max gap-5'}>
-          <SwatchGroup label="Background" delay={list ? 300 + FEATURES.length * 60 : 0}>
-            {BACKGROUNDS.map(b => (
-              <Swatch
-                key={b.id}
-                name={b.name}
-                selected={b.id === bgId}
-                onSelect={() => setBgId(b.id)}
-                style={b.image ? { backgroundImage: `url(${b.image})`, backgroundSize: 'cover', backgroundPosition: 'center' } : { background: b.color }}
-              />
-            ))}
-          </SwatchGroup>
-          <SwatchGroup label="Phone" delay={list ? 360 + FEATURES.length * 60 : 0}>
-            {FINISHES.map(f => (
-              <Swatch key={f.id} name={f.name} selected={f.id === finishId} onSelect={() => setFinishId(f.id)} style={{ background: f.swatch }} />
-            ))}
-          </SwatchGroup>
-        </div>
-      </div>
-    </div>
-  )
-}
-
-function SwatchGroup({ label, children, delay }: { label: string; children: React.ReactNode; delay: number }) {
-  return (
-    <div role="group" aria-label={label} className="pill-in flex items-center gap-3" style={{ animationDelay: `${delay}ms` }}>
-      <span className="hidden w-[92px] text-[13px] font-medium text-white/60 lg:inline">{label}</span>
-      <div className="flex gap-1.5">{children}</div>
-    </div>
-  )
-}
-
-function Swatch({ name, selected, onSelect, style }: { name: string; selected: boolean; onSelect: () => void; style: CSSProperties }) {
-  return (
-    <button type="button" aria-label={name} aria-pressed={selected} title={name} onClick={onSelect} className="swatch">
-      <span className="block h-full w-full rounded-full" style={style} />
-    </button>
+    <ul
+      aria-label="Features"
+      className={layout === 'list' ? 'flex flex-col items-start gap-2' : 'no-scrollbar flex gap-2 overflow-x-auto px-5 md:px-10'}
+    >
+      {FEATURES.map((f, i) => (
+        <li key={f.id} className="pill-in shrink-0" style={{ animationDelay: `${300 + i * 60}ms` }}>
+          <button type="button" aria-pressed={i === featureIdx} onClick={() => pick(i)} className="pill">
+            {f.title}
+          </button>
+        </li>
+      ))}
+    </ul>
   )
 }

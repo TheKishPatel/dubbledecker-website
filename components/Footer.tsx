@@ -1,9 +1,3 @@
-'use client'
-
-import dynamic from 'next/dynamic'
-
-const ShaderCanvas = dynamic(() => import('./ShaderCanvas'), { ssr: false })
-
 const links = [
   { label: 'Support', href: 'mailto:dubbledecker@kishpatel.com?subject=Dubbledecker%20support' },
   { label: 'Contact', href: 'mailto:dubbledecker@kishpatel.com?subject=Contact%20Dubbledecker' },
@@ -37,11 +31,9 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* "nice": the Very Nice Software mark, shader masked to pixel-art letters */}
+      {/* "nice": the Very Nice Software mark, a faint fill masked to pixel-art letters */}
       <a href="https://verynicesoftware.com" className="mt-12 block" aria-label="Very Nice Software">
-        <div className="nice-mask relative w-full overflow-hidden" style={{ aspectRatio: '1226.52 / 290.447' }}>
-          <ShaderCanvas />
-        </div>
+        <div className="nice-mask w-full bg-black/10" style={{ aspectRatio: '1226.52 / 290.447' }} />
       </a>
     </footer>
   )

@@ -2,7 +2,6 @@
 // Each feature brings its own background and phone finish, as in the screenshots.
 
 export type Background = { id: string; name: string; color: string; image?: string }
-export type Finish = { id: string; name: string; swatch: string }
 
 export const BACKGROUNDS: Background[] = [
   { id: 'red', name: 'Red', color: '#CC1C25' },
@@ -12,16 +11,7 @@ export const BACKGROUNDS: Background[] = [
   { id: 'wallpaper', name: 'Wallpaper', color: '#1B1C2E', image: '/media/wallpaper.jpg' },
 ]
 
-// ids match FINISHES in studio/engine.js
-export const FINISHES: Finish[] = [
-  { id: 'ddred', name: 'Red', swatch: '#CD1C25' },
-  { id: 'ddblue', name: 'Blue', swatch: '#0084FF' },
-  { id: 'green', name: 'Green', swatch: '#58A300' },
-  { id: 'blue', name: 'Deep Blue', swatch: '#2D3A53' },
-  { id: 'orange', name: 'Cosmic Orange', swatch: '#C8622B' },
-  { id: 'silver', name: 'Silver', swatch: '#DCDEE1' },
-]
-
+// finish ids match FINISHES in studio/engine.js
 export type Feature = { id: string; title: string; screen: string; bg: string; finish: string }
 
 export const FEATURES: Feature[] = [
