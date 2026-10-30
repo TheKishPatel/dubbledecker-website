@@ -11,10 +11,10 @@ npm run dev      # http://localhost:3000
 npm run build    # writes the static site to out/
 ```
 
-Deploy by uploading `out/` (it's hosted on S3 static website hosting). The build writes the not-found page as both `404.html` and `error.html`, so either works as the error document.
+It's hosted on Vercel, which builds and deploys `master` (and a preview for each pull request). Vercel serves pages without `.html`, so `vercel.json` redirects the old `.html` URLs.
 
 - The hero is a live three.js iPhone ported from `../phone-studio` (`components/studio/engine.js`). The features, their screens and colours are in `components/features.ts`; screens are in `public/screens/` (1206 × 2622 WebP, `cwebp -q 85 -sharp_yuv`).
 - `public/models/iphone-pro-max.glb` ("Apple iPhone 18 Pro Max" by AakashMansukhani, Sketchfab Free Standard licence) is committed and served from the site, so check the licence allows that. Without it the site shows the simpler procedural phone.
-- `/licenses.html` is linked from the app's Info screen, so keep that URL (and check where the App Store privacy link points before moving `/privacy.html`). The licences come from the app's CocoaPods acknowledgements (`app/licenses/licenses.json`).
+- `/licenses.html` is linked from the app's Info screen, and the App Store privacy link may still be `/privacy.html`: keep their redirects in `vercel.json`. The licences come from the app's CocoaPods acknowledgements (`app/licenses/licenses.json`).
 - `og.png` is built from `app/og-phone.jpg`, a Phone Studio render. Re-render it there if the app's look changes.
 - The "nice" footer is the Very Nice Software mark.
