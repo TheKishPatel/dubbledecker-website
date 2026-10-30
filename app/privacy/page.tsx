@@ -3,7 +3,7 @@ import Footer from '@/components/Footer'
 import { PATHS, pageMetadata } from '@/lib/site'
 
 export const metadata: Metadata = pageMetadata({
-  title: 'Privacy — Dubbledecker',
+  title: 'Privacy | Dubbledecker',
   description:
     'Dubbledecker doesn’t collect, store or share personal information. How it uses your location, saved stops and feedback emails.',
   path: PATHS.privacy,

@@ -52,7 +52,7 @@ body {
   letter-spacing: -0.012em;
 }
 
-/* ─── "nice" footer mask — the Very Nice Software mark ─── */
+/* ─── "nice" footer mask: the Very Nice Software mark ─── */
 
 .nice-mask {
   -webkit-mask-image: url('/nice-mask.svg');
