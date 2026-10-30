@@ -1,14 +1,15 @@
 import type { Metadata } from 'next'
 
 // Shared by the page metadata, the manifest, the sitemap and robots.txt
-export const SITE_URL = 'https://dubbledecker.com'
+// the live host: the bare domain redirects here
+export const SITE_URL = 'https://www.dubbledecker.com'
 export const title = 'Dubbledecker | Real time London bus times for iPhone'
 export const description =
   'Real time arrivals for every London bus stop, Croydon tram stop and river bus pier. Saved stops, route maps, widgets and dark mode. Free for iPhone.'
 
-// The static export writes pages as .html files. Keep these URLs: shipped app builds link to
-// /licenses.html from the Info screen, and the privacy policy URL may be registered elsewhere.
-export const PATHS = { home: '/', privacy: '/privacy.html', licenses: '/licenses.html' } as const
+// Vercel serves the pages without .html. The old .html URLs redirect here (vercel.json): shipped app
+// builds link to /licenses.html from the Info screen, and the privacy policy URL may be registered elsewhere.
+export const PATHS = { home: '/', privacy: '/privacy', licenses: '/licenses' } as const
 
 const OG_IMAGE = { url: '/og.png', width: 1200, height: 630, alt: 'Dubbledecker: real time London bus arrivals for iPhone' }
 

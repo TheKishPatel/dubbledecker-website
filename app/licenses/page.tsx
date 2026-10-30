@@ -3,8 +3,7 @@ import Footer from '@/components/Footer'
 import { PATHS, pageMetadata } from '@/lib/site'
 import licenses from './licenses.json'
 
-// Linked from the app's Info screen as dubbledecker.com/licenses.html, and the
-// static export writes this route to exactly that file.
+// Linked from the app's Info screen as dubbledecker.com/licenses.html, which redirects here (vercel.json).
 export const metadata: Metadata = pageMetadata({
   title: 'Licences | Dubbledecker',
   description: 'Open source licences for the libraries and data used in Dubbledecker.',
