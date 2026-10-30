@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next'
 import { GeistSans } from 'geist/font/sans'
 import localFont from 'next/font/local'
+import { Analytics } from '@vercel/analytics/next'
 import { PATHS, SITE_URL, description, pageMetadata, title } from '@/lib/site'
 import './globals.css'
 
@@ -36,6 +37,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en-GB">
       <body className={`${GeistSans.variable} ${pacifico.variable} font-sans`}>
         {children}
+        <Analytics />
       </body>
     </html>
   )

@@ -9,6 +9,7 @@
     "start": "npx serve out"
   },
   "dependencies": {
+    "@vercel/analytics": "^2.0.1",
     "geist": "^1.3.0",
     "next": "^15.3.0",
     "react": "^19.0.0",
