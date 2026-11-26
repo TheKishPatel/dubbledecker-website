@@ -18,3 +18,5 @@ It's hosted on Vercel, which builds and deploys `master` (and a preview for each
 - `/licenses.html` is linked from the app's Info screen, and the App Store privacy link may still be `/privacy.html`: keep their redirects in `vercel.json`. The licences (`app/licenses/licenses.json`) are the app's CocoaPods acknowledgements plus the Pacifico font it bundles; update them when the Podfile changes.
 - `og.png` is built from `app/og-phone.jpg`, a Phone Studio render. Re-render it there if the app's look changes.
 - The "nice" footer is the Very Nice Software mark.
+- `vercel.json` also sets security headers on every response (`next.config` can't, as a static export): `frame-ancestors 'none'` and `X-Frame-Options: DENY` stop other sites showing the pages in an iframe, and `nosniff` stops browsers guessing file types. To allow an embed somewhere, list that site in `frame-ancestors` and drop `X-Frame-Options`. They only apply on Vercel, not in `next dev`.
+- `package.json` overrides the PostCSS that Next 15 pins (8.4.31, which has advisories) with the 8.5 line Next 16 uses. Drop the override after moving to Next 16.
